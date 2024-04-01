@@ -1,54 +1,45 @@
+USB메모리를 3D프린터에 삽입하면 동일한 이름의 파일의 g코드를 덮어쓰거나 삭제합니다.
 
-!! POZOR !!
-
-USB Flash nepoužívejte pěhem tisku.
-Dojde k přepsání nebo smazání souboru se stejným jménem 
-který se právě tiskne.
-
-
-Funkce
-======
-
-1. COPY - po vložení USB Flash se souberem nebo více soubory "gcode"
-   dojde ke zkopírování do složky pro tisk
-   
-2. MOVE - po vložení prázdne USB Flash se přesunou všechny soubory 
-   "gcode" za zložky pro tisk
-   
-   
-   Složka pro tisk se nastavuje v souboru "mountcopy"
-   
-   # For Raspberry Pi use 
-   #DESTINATION="/home/pi/printer_data/gcodes"
-   
-   # For BIQU CB 1 modul use
-   DESTINATION="/home/biqu/printer_data/gcodes" 
-
-
-
-Instalace
+기능
 =========
 
-1. Zkopíruj soubor "99-mountcopy.rules" do složky "/etc/udev/rules.d"
+1. 복사 - 하나의 파일 또는 여러 "gcode" 파일이 포함된 USB 플래시를 삽입한 후
+   인쇄 폴더에 복사됩니다
+   
+2. 이동 - 빈 USB 플래시를 삽입하면 모든 파일이 이동됩니다.
+   인쇄할 폴더에 대한 "gcode"
+   
+   인쇄할 폴더는 "mountcopy" 파일에 설정됩니다.
+   
+   # 라즈베리파이용
+   #DESTINATION="/home/pi/printer_data/gcodes"
+   
+   # BIQU CB 1 모듈 사용의 경우
+   대상="/home/biqu/printer_data/gcodes"
+
+
+설치
+=========
+1. Home에 99-mountcopy.rules와 mountcopy.txt를 붙여넣기합니다.
+
+2. "99-mountcopy.rules" 파일을 "/etc/udev/rules.d" 폴더에 복사합니다.
    sudo cp 99-mountcopy.rules /etc/udev/rules.d/
 
-2. Zkopíruj soubor "mountcopy" do složky "/usr/bin" a přesvědš se, že je soubor spustitelný.
-   sudo cp mountcopy /usr/bin
-   sudo chmod +x /usr/bin/mountcopy
+3. "mountcopy" 파일을 "/usr/bin" 폴더에 복사하고 파일이 실행 가능한지 확인합니다.
+   sudo cp mountcopy.txt /usr/bin/
+   sudo chmod +x /usr/bin/mountcopy.txt
 
-3. Načti konfiguraci UDEVu.
+4. UDEV 구성을 로드합니다.
    sudo udevadm control --reload-rules && sudo udevadm trigger
 
 
-
-Odinstalace
-===========
-
-1. Odstraň pravidlo Udevu, který jsme přidali.
+제거
+=========
+1. 추가한 Udev 규칙을 제거합니다.
    sudo rm /etc/udev/rules.d/99-mountcopy.rules
 
-2. Odstraň pomocný skript.
-   sudo rm /usr/bin/mountcopy
+2. 도우미 스크립트를 삭제합니다.
+   sudo rm /usr/bin/mountcopy.txt
    
-3. Načti konfiguraci UDEVu.
+3. UDEV 구성을 로드합니다.
    sudo udevadm control --reload-rules && sudo udevadm trigger
