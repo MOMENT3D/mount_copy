@@ -20,16 +20,14 @@ USB메모리를 3D프린터에 삽입하면 동일한 이름의 파일의 g코�
 
 설치
 =========
-1. Home에 99-mountcopy.rules와 mountcopy를 붙여넣기합니다.
+1. "99-mountcopy.rules" 파일을 "/etc/udev/rules.d" 폴더에 복사합니다.
+   sudo cp mount_copy/99-mountcopy.rules /etc/udev/rules.d/
 
-2. "99-mountcopy.rules" 파일을 "/etc/udev/rules.d" 폴더에 복사합니다.
-   sudo cp 99-mountcopy.rules /etc/udev/rules.d/
-
-3. "mountcopy" 파일을 "/usr/bin" 폴더에 복사하고 파일이 실행 가능한지 확인합니다.
-   sudo cp mountcopy /usr/bin/
+2. "mountcopy" 파일을 "/usr/bin" 폴더에 복사하고 파일이 실행 가능한지 확인합니다.
+   sudo cp mount_copy/mountcopy /usr/bin/
    sudo chmod +x /usr/bin/mountcopy
 
-4. UDEV 구성을 로드합니다.
+3. UDEV 구성을 로드합니다.
    sudo udevadm control --reload-rules && sudo udevadm trigger
 
 
