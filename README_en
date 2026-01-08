@@ -1,54 +1,55 @@
-!! ATTENTION!!
-Do not use USB Flash while printing. 
-The file with the same name that is currently being printed will be overwritten or deleted.
-
+When you insert USB memory into the 3D printer, it overwrites or deletes the g code of the file with the same name.
 
 Function
-========
+######
 
-1. COPY - after inserting a USB Flash with a file or several "gcode" files
-    will be copied to the print folder
+1. Copy - Insert a USB flash containing one file or multiple "gcode" files
+   Copies to the print folder
    
-2. MOVE - after inserting an empty USB Flash, all files will be moved
-   "gcode" from the print folder
+2. Move - Insert an empty USB flash and all files will be moved.
+   "gcode" for folder to print
    
+   The folder you want to print is set in the "mountcopy" file.
    
-    The folder for printing is set in the "mountcopy" file
+   # For raspberry pie
+   #DESTINATION="/home/pi/printer_data/gcodes"
    
-    # For Raspberry Pi use
-    #DESTINATION="/home/pi/printer_data/gcodes"
-   
-    # For BIQU CB 1 module use
-    DESTINATION="/home/biqu/printer_data/gcodes"
-
- !! ATTENTION!!
- Do not use the USB flash drive while printing. 
- The file that is currently being printed will be overwritten or moved!
-
+   # When using the BIQU CB1 module
+   대상="/home/biqu/printer_data/gcodes"
 
 Installation
-============
+######
 
-1. Copy the file "99-mountcopy.rules" to the folder "/etc/udev/rules.d"
-    sudo cp 99-mountcopy.rules /etc/udev/rules.d/
+Connect to SSH terminal, will remove existing algorithms and install new ones.
+If you don't have an existing algorithm, you can exclude up to step 5.
 
-2. Copy the "mountcopy" file to the "/usr/bin" folder and make sure the file is executable.
-    sudo cp mountcopy /usr/bin
-    sudo chmod +x /usr/bin/mountcopy
-
-3. Load the UDEV configuration.
-    sudo udevadm control --reload-rules && sudo udevadm trigger
-
-
-
-Uninstallation
-==============
-
-1. Remove the Udev rule we added.
-    sudo rm /etc/udev/rules.d/99-mountcopy.rules
+1. Remove previously used Udev rules.
+   sudo rm /etc/udev/rules.d/99-mountcopy.rules
 
 2. Delete the helper script.
-    sudo rm /usr/bin/mountcopy
+   sudo rm /usr/bin/mountcopy
+
+3. Enter when a password request is received
    
-3. Load the UDEV configuration.
-    sudo udevadm control --reload-rules && sudo udevadm trigger
+4. Load the UDEV configuration.
+   sudo udevadm control --reload-rules && sudo udevadm trigger
+
+5. Remove the previous algorithm.
+   <Enter the 3 lines below at once> 
+   sudo rm -rf /home/biqu/mount_copy
+   mkdir -p /home/biqu/mount_copy
+  cd /home/biqu/mount_copy
+
+6. Install a new algorithm.
+   cd
+   git clone https://github.com/MOMENT3D/mount_copy_v2.git
+   cd /home/biqu/mount_copy_v2
+   chmod +x *.sh
+   ./install.sh
+
+Removal
+######
+   cd
+   cd /home/biqu/mount_copy_v2
+   chmod +x *.sh
+   ./uninstall.sh
